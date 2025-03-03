@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
-import CoursesSideList from "@/components/courses/CoursesSideList";
+import CoursesList from "@/components/courses/CoursesList";
 
 
 export default async function Page() {
@@ -18,10 +18,7 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 lg:space-x-6">
-      {/* Course List Sidebar */}
-      <div className="w-full md:w-1/3 lg:w-1/4">
-        <CoursesSideList courses={courses}/>
-      </div>
+        <CoursesList courses={courses}/>
     </div>
   )
 }
