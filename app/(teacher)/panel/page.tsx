@@ -6,12 +6,12 @@ import {AuthContext} from "@/contexts/auth-context-provider";
 function CalendarDay({day}) {
   if ( day > 0 ) {
     return (
-      <li className={"p-2 w-32 h-32 bg-blue-700 text-gray-950"}>
+      <li className={"p-2 max-w-10 h-10 bg-blue-700 text-gray-950"}>
         <span>{day}</span>
       </li>
     );
   } else {
-    return (<li className={"w-32 h-32 border border-blue-700 text-gray-950"}>
+    return (<li className={"max-w-10 h-10 border border-blue-700 text-gray-950"}>
       <span>{day}</span>
     </li>)
   }
@@ -63,7 +63,7 @@ function CalendarMonth({month, year}) {
 function CalendarYear() {
   let year = 2025;
   return (
-    <div className={"grid grid-cols-1 gap-7"}>
+    <div className={"grid grid-cols-1"}>
       {Array.from(
         {length: 12},
         (_, i) => i + 1
@@ -81,6 +81,15 @@ function CalendarYear() {
 )
 }
 
+function DailyPlanner() {
+
+
+
+  return (<>
+    ksksk
+  </>);
+}
+
 function TeacherPage() {
   const authContext = useContext(AuthContext);
 
@@ -88,7 +97,20 @@ function TeacherPage() {
   return (
     <>
       <h1>Teacher Panel</h1>
-      <CalendarYear />
+      <div className={"flex"}>
+      {/*<div className={"w-2/3"}>*/}
+      {/*  /!*<CalendarYear />*!/*/}
+      {/*</div>*/}
+        <div className={"w-3/3"}>
+          <ul className={"flex flex-col"}>
+            <DailyPlanner/>
+          </ul>
+
+        </div>
+
+
+      </div>
+
     </>
   );
 }
