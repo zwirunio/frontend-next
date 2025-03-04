@@ -84,9 +84,11 @@ function CalendarYear() {
 function DailyPlanner() {
 
 
-
   return (<>
-    ksksk
+    <ul>
+      <li>8:00</li>
+      <li>21:00</li>
+    </ul>
   </>);
 }
 
@@ -111,7 +113,7 @@ function TeacherPage() {
 
       </div>
 
-    </>
+    </ul>
   );
 }
 
