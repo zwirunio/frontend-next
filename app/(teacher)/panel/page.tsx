@@ -4,7 +4,7 @@ import {useContext} from "react";
 import {AuthContext} from "@/contexts/auth-context-provider";
 
 function CalendarDay({day}) {
-  if ( day > 0 ) {
+  if (day > 0) {
     return (
       <li className={"p-2 max-w-10 h-10 bg-blue-700 text-gray-950"}>
         <span>{day}</span>
@@ -18,7 +18,7 @@ function CalendarDay({day}) {
 }
 
 function CalendarMonth({month, year}) {
-  const isLeapYear = (year) => (year % 4 === 0 && year % 100 !== 0) || year % 400===0;
+  const isLeapYear = (year) => (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 
 
   let numbersOfDaysInMonth = [
@@ -42,13 +42,12 @@ function CalendarMonth({month, year}) {
     return date.getDay();
   }
 
-  let firstDayOfMonthWeekday = getWeekday(year+"-"+month+"-01");
+  let firstDayOfMonthWeekday = getWeekday(year + "-" + month + "-01");
 
   const numberOfDaysInMonth = numbersOfDaysInMonth[month - 1];
 
 
-  for(let day = 2 - firstDayOfMonthWeekday; day <= numberOfDaysInMonth;day++)
-  {
+  for (let day = 2 - firstDayOfMonthWeekday; day <= numberOfDaysInMonth; day++) {
     daysArray.push(<CalendarDay key={day} day={day}/>);
   }
 
@@ -70,27 +69,27 @@ function CalendarYear() {
       ).map(
         (month) => (
           <>
-          <li>{month}</li>
-          <CalendarMonth key={month} month={month} year={year}/>
+            <li>{month}</li>
+            <CalendarMonth key={month} month={month} year={year}/>
           </>
+        )
+      )
+      }
+
+    </div>
   )
-)
 }
 
-</div>
-)
-}
-
-function DailyPlannerHour({hour}){
-  return <li>godzina</li>
+function DailyPlannerHour({hour}) {
+  return <li className={"border-2 border-blue-700 w-full h-32 p-4 "}>{hour}</li>
 }
 
 function DailyPlanner() {
 
   let dailyPlannerHours = [];
 
-  for(let i=1;i<2;i++){
-    dailyPlannerHours.push(<DailyPlannerHour hour={1} />);
+  for (let i = 8; i < 22; i++) {
+    dailyPlannerHours.push(<DailyPlannerHour key={"dpd"+i} hour={i + ":00"}/>);
   }
 
   return (<>
@@ -108,11 +107,11 @@ function TeacherPage() {
     <>
       <h1>Teacher Panel</h1>
       <div className={"flex"}>
-      {/*<div className={"w-2/3"}>*/}
-      {/*  /!*<CalendarYear />*!/*/}
-      {/*</div>*/}
-        <div className={"w-3/3"}>
-          <ul className={"flex flex-col"}>
+        <div className={"w-2/3"}>
+          <CalendarYear/>
+        </div>
+        <div className={"w-1/3"}>
+          <ul className={"flex flex-col w-full space-y-2"}>
             <DailyPlanner/>
           </ul>
 
