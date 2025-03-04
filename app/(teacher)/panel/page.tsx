@@ -81,13 +81,22 @@ function CalendarYear() {
 )
 }
 
+function DailyPlannerHour({hour}){
+  return <li>godzina</li>
+}
+
 function DailyPlanner() {
+
+  let dailyPlannerHours = [];
+
+  for(let i=1;i<2;i++){
+    dailyPlannerHours.push(<DailyPlannerHour hour={1} />);
+  }
 
 
   return (<>
     <ul>
-      <li>8:00</li>
-      <li>21:00</li>
+      {dailyPlannerHours}
     </ul>
   </>);
 }
@@ -113,7 +122,7 @@ function TeacherPage() {
 
       </div>
 
-    </ul>
+    </>
   );
 }
 
