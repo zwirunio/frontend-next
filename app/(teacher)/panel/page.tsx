@@ -93,7 +93,6 @@ function DailyPlanner() {
     dailyPlannerHours.push(<DailyPlannerHour hour={1} />);
   }
 
-
   return (<>
     <ul>
       {dailyPlannerHours}
