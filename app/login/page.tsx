@@ -1,48 +1,28 @@
-"use client";
-
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import { login, signup } from './actions'
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
-import React, {useContext, useState} from "react";
-import {AuthContext} from "@/contexts/auth-context-provider";
+import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card";
 
-function LoginPage() {
-    const authContext = useContext(AuthContext);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    function handleSubmit(event: React.FormEvent) {
-        event.preventDefault();
-        if(email && password == "123") {
-          authContext?.setAuth({email});
-          console.log("Logged in");
-        }
-    }
+export default function LoginPage() {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">Logowanie</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email address</Label>
-              <Input onChange={(e)=>setEmail(e.target.value)} type="email" id="email" name="email" placeholder="Enter email" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input onChange={(e)=>setPassword(e.target.value)}  type="password" id="password" name="password" placeholder="Enter password" required />
-            </div>
-            <CardFooter className="flex justify-end p-0 mt-4">
-              <Button type="submit" className="w-full hover:bg-primary">
-                Zaloguj się
-              </Button>
-            </CardFooter>
-          </form>
-        </CardContent>
-      </Card>
-    );
-}
+            <Card className={"md:w-4/12 w-12/12"}>
+                <form>
+                    <CardHeader>Zaloguj się</CardHeader>
+                    <CardContent>
 
-export default LoginPage;
+                            <Label htmlFor="email">Email:</Label>
+                            <Input id="email" name="email" type="email" required />
+                            <Label htmlFor="password">Password:</Label>
+                            <Input id="password" name="password" type="password" required />
+
+
+                    </CardContent>
+                    <CardFooter className={"flex flex-col space-y-2"}>
+                        <Button className={"w-full bg-blue-500"} formAction={login}>Log in</Button>
+                        <Button className={"w-full bg-green-500"} formAction={signup}>Sign up</Button>
+                    </CardFooter>
+                </form>
+            </Card>
+    )
+}
