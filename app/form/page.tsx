@@ -5,6 +5,7 @@ import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
 import {save} from "@/app/form/actions";
+// import {useFormState} from "react-dom";
 
 // function saveForm(formData: FormData) {
 //     const [errors] = await save(formData);
@@ -13,7 +14,7 @@ import {save} from "@/app/form/actions";
 //
 // }
 
-
+const initialState = {};
 export default function FormPage(){
     return(
         <Card className={"w-8/12"}>

@@ -1,17 +1,30 @@
 "use client";
 
-import { useContext } from "react";
-import { AuthContext } from "@/contexts/auth-context-provider";
+
+import {createClient} from "@/utils/supabase/client";
+import {useEffect, useState} from "react";
+import {User} from "@supabase/auth-js";
 
 function ProfilePage() {
-  const authContext = useContext(AuthContext);
+    const [user, setUser] = useState<User|null>(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const supabase = createClient(); // Tworzymy instancję Supabase wewnątrz komponentu
+            const { data } = await supabase.auth.getUser();
+            setUser(data?.user || null);
+        };
+
+        fetchUser();
+    }, []);
+
   return (
     <>
       <h1>Profile</h1>
-      <p>Profile page content</p>
+
+        {user?.id}
 
 
-      {authContext?.auth ? authContext.auth.email : " NOK"}
     </>
   );
 }
