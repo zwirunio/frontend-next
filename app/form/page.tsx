@@ -6,6 +6,12 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Textarea} from "@/components/ui/textarea";
 import {save} from "@/app/form/actions";
 
+// function saveForm(formData: FormData) {
+//     const [errors] = await save(formData);
+//
+//     console.log(errors);
+//
+// }
 
 
 export default function FormPage(){

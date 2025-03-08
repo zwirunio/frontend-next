@@ -11,7 +11,7 @@ export async function save(
     if (!result.success) {
         // Obsługa błędów (można np. zwrócić komunikat do UI)
         console.error(result.error.format());
-        return { errors: result.error.format() };
+       // return { errors: result.error.format() };
     }
     console.log(formData);
 }
