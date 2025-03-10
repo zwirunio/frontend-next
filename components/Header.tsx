@@ -43,6 +43,9 @@ function Header() {
         <header className="flex justify-center w-screen dark:text-white text-white dark:bg-blue-800 bg-blue-500 p-4 space-x-4">
             <div className={"w-8/12 flex justify-between"}>
             <div className={"space-x-2"}>
+              <Link className={`link ${pathname === "/teachers" ? "active" : ""}`} href="/teachers">
+                Teachers
+              </Link>
             <Link className={`link ${pathname === "/profile" ? "active" : ""}`} href="/profile">
                 Profile
             </Link>
