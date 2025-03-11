@@ -1,5 +1,7 @@
 import {createClient} from "@/utils/supabase/client";
 import {Teacher} from "@/types/Teacher";
+import {redirect} from "next/navigation";
+import {revalidatePath} from "next/cache";
 
 export async function fetchTeachers(
     city: string,
@@ -74,4 +76,21 @@ export async function fetchTeacher(
     setError(null);
     setTeacher(data[0] ?? null);
   }
+}
+
+export async function updateTeacher(formData: FormData){
+  console.log(formData.get("id"));
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('teachers')
+    .update({ name: formData.get("name") as string, surname: formData.get("surname") as string })
+    .eq('id', formData.get("id") as string)
+    .select()
+
+  if (error) console.log(error)
+  if (data) console.log(data)
+  //revalidatePath("/profile","page")
+  redirect("/profile")
+
 }
