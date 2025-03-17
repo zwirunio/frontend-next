@@ -20,7 +20,7 @@ export default function LoginPage() {
                     </CardContent>
                     <CardFooter className={"flex flex-col space-y-2"}>
                         <Button className={"w-full bg-blue-500"} formAction={login}>Log in</Button>
-                        <Button className={"w-full bg-green-500"} formAction={signup}>Sign up</Button>
+                        <Button className={"w-full bg-green-500"} formAction={signup}>Create account</Button>
                     </CardFooter>
                 </form>
             </Card>

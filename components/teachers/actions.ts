@@ -2,6 +2,11 @@ import {createClient} from "@/utils/supabase/client";
 import {Teacher} from "@/types/Teacher";
 import {redirect} from "next/navigation";
 
+// Controller
+
+// CRUD - CREATE READ UPDATE DELETE
+
+// LIST — Listowanie nauczycieli z filtrami.
 export async function fetchTeachers(
     city: string,
     online: boolean,
@@ -55,13 +60,32 @@ export async function fetchTeachers(
   }
 }
 
+// CHECK IF EXIST — Sprawdzenie, czy istnieje konto nauczyciela przypisane do użytkownika
+export async function existTeacher(
+  userId: string,
+)
+{
+  const supabase = createClient();
+
+  const query = supabase
+    .from("teachers")
+    .select("*")
+    .eq("user", userId);
+
+  const {data} = await query;
+
+  return data;
+
+}
+
+// READ (SHOW) — Wyświetlenie danych danego nauczyciela
 export async function fetchTeacher(
   userId: string, setTeacher: (teacher: Teacher|null) => void, setError: (message: string | null) => void,
   )
 {
   const supabase = createClient();
 
-  let query = supabase
+  const query = supabase
     .from("teachers")
     .select("*")
     .eq("user", userId);
@@ -77,6 +101,7 @@ export async function fetchTeacher(
   }
 }
 
+// UPDATE — Aktualizacja danych nauczyciela
 export async function updateTeacher(formData: FormData){
   console.log(formData.get("id"));
 
@@ -91,5 +116,4 @@ export async function updateTeacher(formData: FormData){
   if (data) console.log(data)
   //revalidatePath("/profile","page")
   redirect("/profile")
-
 }

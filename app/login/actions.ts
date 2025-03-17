@@ -4,10 +4,10 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { cookies } from "next/headers";
 import { createClient } from '@/utils/supabase/server'
+import {existTeacher} from "@/components/teachers/actions";
 
 export async function login(formData: FormData) {
-    const cookieStore = await cookies()
-    const supabase = await createClient(cookieStore)
+    const supabase = await createClient(cookies())
 
     // type-casting here for convenience
     // in practice, you should validate your inputs
@@ -16,7 +16,15 @@ export async function login(formData: FormData) {
         password: formData.get('password') as string,
     }
 
-    const { error } = await supabase.auth.signInWithPassword(data)
+    const { data: {user}, error } = await supabase.auth.signInWithPassword(data)
+
+    if (user) {
+        const teacher = await existTeacher(user.id);
+        console.log("===================================================")
+        console.log(teacher)
+    } else {
+        redirect('/teacher/create')
+    }
 
     if (error) {
         redirect('/error')
@@ -38,12 +46,18 @@ export async function signup(formData: FormData) {
 
     const { error } = await supabase.auth.signUp(data)
 
-
-
     if (error) {
         redirect('/error')
     }
 
     revalidatePath('/', 'layout')
     redirect('/')
+}
+
+export async function signUpAsStudent(formData: FormData) {
+    await signup(formData)
+}
+
+export async function signUpAsTeacher(formData: FormData) {
+    await signup(formData)
 }

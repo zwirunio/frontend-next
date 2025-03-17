@@ -1,4 +1,4 @@
-import { z } from "zod";
+import {z} from "zod";
 
 const now = new Date();
 now.setSeconds(0, 0);
