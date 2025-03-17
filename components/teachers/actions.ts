@@ -1,7 +1,6 @@
 import {createClient} from "@/utils/supabase/client";
 import {Teacher} from "@/types/Teacher";
 import {redirect} from "next/navigation";
-import {revalidatePath} from "next/cache";
 
 export async function fetchTeachers(
     city: string,
