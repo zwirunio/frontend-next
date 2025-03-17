@@ -1,5 +1,5 @@
 "use client";
-import {createClient} from "@/utils/supabase/client";
+import  {createClient} from "@/utils/supabase/client";
 
 import {useEffect, useState} from "react";
 import {User} from "@supabase/auth-js";
@@ -12,6 +12,7 @@ import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components
 import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Switch} from "@/components/ui/switch";
 function ProfilePage() {
     const [editMode, setEditMode] = useState<boolean>(false)
     const [user, setUser] = useState<User|null>(null);
@@ -35,6 +36,25 @@ function ProfilePage() {
     }
   }, [user]);
 
+  function toggleOnline(){
+      setTeacher(prevTeacher => ({
+          ...prevTeacher,
+          online: !prevTeacher?.online
+      }) as Teacher);
+  }
+    function toggleTeacher(){
+        setTeacher(prevTeacher => ({
+            ...prevTeacher,
+            teacher_location: !prevTeacher?.teacher_location
+        }) as Teacher);
+    }
+    function toggleStudent(){
+        setTeacher(prevTeacher => ({
+            ...prevTeacher,
+            student_location: !prevTeacher?.student_location
+        }) as Teacher);
+    }
+
   return (
     <>
       {
@@ -57,7 +77,7 @@ function ProfilePage() {
                     <Input id="name" name="name" defaultValue={teacher?.name} required/>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name">Nazwisko</Label>
+                    <Label htmlFor="surname">Nazwisko</Label>
                     <Input id="surname" name="surname" defaultValue={teacher?.surname} required/>
                   </div>
                     <div className="space-y-2">
@@ -66,8 +86,8 @@ function ProfilePage() {
                     </div>
                     {/*Textarea z polem description */}
                     <div className={"space-y-2"}>
-                        <Label htmlFor="name">Miasto</Label>
-                        <Select name={"city"} defaultValue={teacher?.city}>
+                        <Label htmlFor="city">Miasto</Label>
+                        <Select name={"city"}  defaultValue={teacher?.city}>
                             <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder="Wybierz miasto" />
                             </SelectTrigger>
@@ -78,6 +98,18 @@ function ProfilePage() {
                                 <SelectItem value="Wyszków">Wyszków</SelectItem>
                             </SelectContent>
                         </Select>
+                    </div>
+                    <div>
+                        <Label htmlFor="online"> Prowadzę Lekcje Online</Label>
+                        <Switch name="online" id="online" checked={teacher?.online} onCheckedChange={toggleOnline}/>
+                    </div>
+                    <div>
+                        <Label htmlFor="teacher_location"> Prowadzę Lekcje W Swoim Domu</Label>
+                        <Switch name="teacher_location" id="teacher_location" checked={teacher?.teacher_location} onCheckedChange={toggleTeacher}/>
+                    </div>
+                    <div>
+                        <Label htmlFor="student_location"> Prowadzę Lekcje W Domu Ucznia</Label>
+                        <Switch name="student_location" id="student_location" checked={teacher?.student_location} onCheckedChange={toggleStudent}/>
                     </div>
                   <Input name={"id"} value={teacher?.id} type={"hidden"}/>
                   <div className="text-xs text-muted-foreground">ID: {teacher?.id}</div>

@@ -4,4 +4,7 @@ export type Teacher = {
   name: string;
   surname: string;
   city: string;
+  online: boolean;
+  teacher_location: boolean;
+  student_location: boolean;
 };
