@@ -10,6 +10,7 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Label} from "@/components/ui/label";
+import {Textarea} from "@/components/ui/textarea";
 
 function ProfilePage() {
     const [editMode, setEditMode] = useState<boolean>(false)
@@ -59,6 +60,11 @@ function ProfilePage() {
                     <Label htmlFor="name">Nazwisko</Label>
                     <Input id="surname" name="surname" defaultValue={teacher?.surname} required/>
                   </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="description">Opis</Label>
+                        <Textarea name="description" id="description" placeholder="Powiedz nam coś o sobie" defaultValue={teacher?.description} />
+                    </div>
+                    {/*Textarea z polem description */}
                   <Input name={"id"} value={teacher?.id} type={"hidden"}/>
                   <div className="text-xs text-muted-foreground">ID: {teacher?.id}</div>
                 </CardContent>
