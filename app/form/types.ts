@@ -22,7 +22,7 @@ export const lessonSchema = z.object({
     studentQty: z
         .string()
         .transform(Number)
-        .refine((n) => n >= 1 && n <= process.env.MAX_STUDENTS_PER_CLASS, {
+        .refine((n) => n >= 1 && n <= 1, {
             message: "Ilość miejsc musi być w zakresie 1-"+process.env.MAX_STUDENTS_PER_CLASS+".",
         }),
 });

@@ -1,5 +1,5 @@
 "use client";
-import  {createClient} from "@/utils/supabase/client";
+import {createClient} from "@/utils/supabase/client";
 
 import {useEffect, useState} from "react";
 import {User} from "@supabase/auth-js";
@@ -37,24 +37,28 @@ function ProfilePage() {
     }
   }, [user]);
 
-  function toggleOnline(){
-      setTeacher(prevTeacher => ({
-          ...prevTeacher,
-          online: !prevTeacher?.online
-      }) as Teacher);
+
+  function toggleOnline() {
+    setTeacher(prevTeacher => ({
+      ...prevTeacher,
+      online: !prevTeacher?.online
+    }) as Teacher);
   }
-    function toggleTeacher(){
-        setTeacher(prevTeacher => ({
-            ...prevTeacher,
-            teacher_location: !prevTeacher?.teacher_location
-        }) as Teacher);
-    }
-    function toggleStudent(){
-        setTeacher(prevTeacher => ({
-            ...prevTeacher,
-            student_location: !prevTeacher?.student_location
-        }) as Teacher);
-    }
+  function toggleTeachersLocation() {
+    setTeacher(prevTeacher => ({
+      ...prevTeacher,
+      teachers_location: !prevTeacher?.teachers_location
+    }) as Teacher);
+  }
+  function toggleStudentsLocation() {
+    setTeacher(prevTeacher => ({
+      ...prevTeacher,
+      students_location: !prevTeacher?.students_location
+    }) as Teacher);
+  }
+
+
+
 
 
   return (
@@ -82,41 +86,40 @@ function ProfilePage() {
                     <Label htmlFor="surname">Nazwisko</Label>
                     <Input id="surname" name="surname" defaultValue={teacher?.surname} required/>
                   </div>
-
-                    <div className="space-y-2">
-                        <Label htmlFor="description">Opis</Label>
-                        <Textarea name="description" id="description" placeholder="Powiedz nam coś o sobie" defaultValue={teacher?.description} />
-                    </div>
-                    {/*Textarea z polem description */}
-                    <div className={"space-y-2"}>
-                        <Label htmlFor="city">Miasto</Label>
-                        <Select name={"city"}  defaultValue={teacher?.city}>
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Wybierz miasto" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Kraków">Kraków</SelectItem>
-                                <SelectItem value="Poznań">Poznań</SelectItem>
-                                <SelectItem value="Warszawa">Warszawa</SelectItem>
-                                <SelectItem value="Wyszków">Wyszków</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div>
-                        <Label htmlFor="online"> Prowadzę Lekcje Online</Label>
-                        <Switch name="online" id="online" checked={teacher?.online} onCheckedChange={toggleOnline}/>
-                    </div>
-                    <div>
-                        <Label htmlFor="teacher_location"> Prowadzę Lekcje W Swoim Domu</Label>
-                        <Switch name="teacher_location" id="teacher_location" checked={teacher?.teacher_location} onCheckedChange={toggleTeacher}/>
-                    </div>
-                    <div>
-                        <Label htmlFor="student_location"> Prowadzę Lekcje W Domu Ucznia</Label>
-                        <Switch name="student_location" id="student_location" checked={teacher?.student_location} onCheckedChange={toggleStudent}/>
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Opis</Label>
+                    <Textarea name="description" id="description" placeholder="Powiedz nam coś o sobie"
+                              defaultValue={teacher?.description}/>
+                  </div>
+                  {/*Textarea z polem description */}
+                  <div className={"space-y-2"}>
+                    <Label htmlFor="name">Miasto</Label>
+                    <Select name={"city"} defaultValue={teacher?.city}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Wybierz miasto"/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Kraków">Kraków</SelectItem>
+                        <SelectItem value="Poznań">Poznań</SelectItem>
+                        <SelectItem value="Warszawa">Warszawa</SelectItem>
+                        <SelectItem value="Wyszków">Wyszków</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className={"space-y-2"}>
+                    <Label htmlFor="online">Udzielam lekcji online</Label>
+                    <Switch name={"online"} id="online" checked={teacher?.online} onCheckedChange={toggleOnline}/>
+                  </div>
+                  <div className={"space-y-2"}>
+                    <Label htmlFor="students_location">Udzielam lekcji online</Label>
+                    <Switch name={"students_location"} id="students_location" checked={teacher?.students_location} onCheckedChange={toggleStudentsLocation}/>
+                  </div>
+                  <div className={"space-y-2"}>
+                    <Label htmlFor="teachers_location">Udzielam lekcji online</Label>
+                    <Switch name={"teachers_location"} id="teachers_location" checked={teacher?.teachers_location} onCheckedChange={toggleTeachersLocation}/>
+                  </div>
                   <Input name={"id"} value={teacher?.id} type={"hidden"}/>
                   <div className="text-xs text-muted-foreground">ID: {teacher?.id}</div>
-
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   {/*<Button variant="outline" type="button" onClick={() => history.back()}>*/}

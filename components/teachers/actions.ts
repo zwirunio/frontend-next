@@ -113,7 +113,9 @@ export async function updateTeacher(formData: FormData){
       surname: formData.get("surname") as string,
       city: formData.get("city") as string,
       description: formData.get("description") as string,
-      online: formData.get("online") as string // TODO: zapisuje się null zamiast false
+      online: formData.get("online") as string, // TODO: zapisuje się null zamiast false
+      teachers_location: formData.get("teachers_location") as string, // TODO: zapisuje się null zamiast false
+      students_location: formData.get("students_location") as string // TODO: zapisuje się null zamiast false
     })
     .eq('id', formData.get("id") as string)
     .select()
