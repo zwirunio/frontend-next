@@ -12,20 +12,22 @@ import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components
 import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-function ProfilePage() {
-    const [editMode, setEditMode] = useState<boolean>(false)
-    const [user, setUser] = useState<User|null>(null);
-    const [teacher, setTeacher] = useState<Teacher|null>()
-    const [error, setError] = useState<string | null>(null);
+import {Switch} from "@/components/ui/switch";
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            const supabase = createClient();
-            const { data } = await supabase.auth.getUser();
-            setUser(data?.user || null);
-        };
-        fetchUser();
-    }, []);
+function ProfilePage() {
+  const [editMode, setEditMode] = useState<boolean>(false)
+  const [user, setUser] = useState<User | null>(null);
+  const [teacher, setTeacher] = useState<Teacher | null>()
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const supabase = createClient();
+      const {data} = await supabase.auth.getUser();
+      setUser(data?.user || null);
+    };
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     if (user?.id) {
@@ -34,6 +36,18 @@ function ProfilePage() {
       setError("Nie ma tu jeszcze ID")
     }
   }, [user]);
+
+
+  function toggleOnline() {
+    setTeacher(prevTeacher => ({
+      ...prevTeacher,
+      online: !prevTeacher?.online
+    }) as Teacher);
+  }
+
+
+
+
 
   return (
     <>
@@ -57,30 +71,35 @@ function ProfilePage() {
                     <Input id="name" name="name" defaultValue={teacher?.name} required/>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name">Nazwisko</Label>
+                    <Label htmlFor="surname">Nazwisko</Label>
                     <Input id="surname" name="surname" defaultValue={teacher?.surname} required/>
                   </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="description">Opis</Label>
-                        <Textarea name="description" id="description" placeholder="Powiedz nam coś o sobie" defaultValue={teacher?.description} />
-                    </div>
-                    {/*Textarea z polem description */}
-                    <div className={"space-y-2"}>
-                        <Label htmlFor="name">Miasto</Label>
-                        <Select name={"city"} defaultValue={teacher?.city}>
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Wybierz miasto" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Kraków">Kraków</SelectItem>
-                                <SelectItem value="Poznań">Poznań</SelectItem>
-                                <SelectItem value="Warszawa">Warszawa</SelectItem>
-                                <SelectItem value="Wyszków">Wyszków</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                  <Input name={"id"} value={teacher?.id} type={"hidden"}/>
-                  <div className="text-xs text-muted-foreground">ID: {teacher?.id}</div>
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Opis</Label>
+                    <Textarea name="description" id="description" placeholder="Powiedz nam coś o sobie"
+                              defaultValue={teacher?.description}/>
+                  </div>
+                  {/*Textarea z polem description */}
+                  <div className={"space-y-2"}>
+                    <Label htmlFor="name">Miasto</Label>
+                    <Select name={"city"} defaultValue={teacher?.city}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Wybierz miasto"/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Kraków">Kraków</SelectItem>
+                        <SelectItem value="Poznań">Poznań</SelectItem>
+                        <SelectItem value="Warszawa">Warszawa</SelectItem>
+                        <SelectItem value="Wyszków">Wyszków</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className={"space-y-2"}>
+                    <Label htmlFor="online">Udzielam lekcji online</Label>
+                    <Switch name={"online"} id="online" checked={teacher?.online} onCheckedChange={toggleOnline}/>
+                  </div>
+                    <Input name={"id"} value={teacher?.id} type={"hidden"}/>
+                    <div className="text-xs text-muted-foreground">ID: {teacher?.id}</div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   {/*<Button variant="outline" type="button" onClick={() => history.back()}>*/}
@@ -115,7 +134,7 @@ function ProfilePage() {
               </div>
             </div>
             <p>{teacher?.description}</p>
-              <p>{teacher?.city}</p>
+            <p>{teacher?.city}</p>
             <Button onClick={() => setEditMode(true)}>Edytuj</Button>
           </div>
       }

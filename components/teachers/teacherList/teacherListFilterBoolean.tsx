@@ -10,6 +10,6 @@ export default function TeacherListFilterBoolean(props: { checked: boolean, onCh
       <span>{props.name}</span>
       {props.desc && <small>{props.desc}</small>}
     </div>
-    <Switch checked={props.checked} onCheckedChange={toggleSwitch}/>
+    <Switch checked={props.checked} onCheckedChange={toggleSwitch} />
   </div>;
 }
