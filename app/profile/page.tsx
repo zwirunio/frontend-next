@@ -61,15 +61,16 @@ function ProfilePage() {
                     <Input id="surname" name="surname" defaultValue={teacher?.surname} required/>
                   </div>
                     <div className={"space-y-2"}>
+                        <Label htmlFor="name">Miasto</Label>
                         <Select name={"city"} defaultValue={teacher?.city}>
                             <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder="Wybierz miasto" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="krakow">Kraków</SelectItem>
-                                <SelectItem value="poznan">Poznań</SelectItem>
-                                <SelectItem value="warszawa">Warszawa</SelectItem>
-                                <SelectItem value="wyszkow">Wyszków</SelectItem>
+                                <SelectItem value="Kraków">Kraków</SelectItem>
+                                <SelectItem value="Poznań">Poznań</SelectItem>
+                                <SelectItem value="Warszawa">Warszawa</SelectItem>
+                                <SelectItem value="Wyszków">Wyszków</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
