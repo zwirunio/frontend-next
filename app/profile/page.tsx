@@ -10,6 +10,7 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Label} from "@/components/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 function ProfilePage() {
     const [editMode, setEditMode] = useState<boolean>(false)
@@ -59,6 +60,20 @@ function ProfilePage() {
                     <Label htmlFor="name">Nazwisko</Label>
                     <Input id="surname" name="surname" defaultValue={teacher?.surname} required/>
                   </div>
+                    <div className={"space-y-2"}>
+                        <Label htmlFor="name">Miasto</Label>
+                        <Select name={"city"} defaultValue={teacher?.city}>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Wybierz miasto" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="Kraków">Kraków</SelectItem>
+                                <SelectItem value="Poznań">Poznań</SelectItem>
+                                <SelectItem value="Warszawa">Warszawa</SelectItem>
+                                <SelectItem value="Wyszków">Wyszków</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
                   <Input name={"id"} value={teacher?.id} type={"hidden"}/>
                   <div className="text-xs text-muted-foreground">ID: {teacher?.id}</div>
                 </CardContent>
@@ -95,6 +110,7 @@ function ProfilePage() {
               </div>
             </div>
             <p>{teacher?.description}</p>
+              <p>{teacher?.city}</p>
             <Button onClick={() => setEditMode(true)}>Edytuj</Button>
           </div>
       }
