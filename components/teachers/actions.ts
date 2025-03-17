@@ -108,7 +108,13 @@ export async function updateTeacher(formData: FormData){
   const supabase = createClient();
   const { data, error } = await supabase
     .from('teachers')
-    .update({ name: formData.get("name") as string, surname: formData.get("surname") as string })
+    .update({
+      name: formData.get("name") as string,
+      surname: formData.get("surname") as string,
+      city: formData.get("city") as string,
+      description: formData.get("description") as string,
+      online: formData.get("online") as string // TODO: zapisuje się null zamiast false
+    })
     .eq('id', formData.get("id") as string)
     .select()
 

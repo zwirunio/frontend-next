@@ -7,4 +7,5 @@ export type Teacher = {
   online: boolean;
   teacher_location: boolean;
   student_location: boolean;
+
 };
