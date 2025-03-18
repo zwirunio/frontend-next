@@ -1,25 +1,27 @@
 import {createClient} from "@/utils/supabase/client";
 import {Teacher} from "@/types/Teacher";
 
-// Controller
-export interface TeachersControllerInterface
-{
-  teachers: Teacher[] | null;
+interface TeachersControllerResponse {
+  data: Teacher[] | null;
   error: Error | null;
 }
 
 
+// Controller
+
 // CRUD - CREATE READ UPDATE DELETE
 
 // LIST — Listowanie nauczycieli z filtrami.
+/*
+ * @return {data: Teachers[], error: Error}
+ */
 export async function fetchTeachers(
-    city: string,
-    online: boolean,
-    studentsLocation: boolean,
-    teachersLocation: boolean,
-    nameSearchQuery: string
-): Promise<TeachersControllerInterface>
-  {
+  city: string,
+  online: boolean,
+  studentsLocation: boolean,
+  teachersLocation: boolean,
+  nameSearchQuery: string
+): Promise<TeachersControllerResponse> {
   const supabase = createClient();
 
   let query = supabase.from("teachers").select("*");
@@ -48,13 +50,20 @@ export async function fetchTeachers(
     .order("name", {ascending: true})
     .order("surname", {ascending: true})
 
-  const {data : teachers, error} = await query;
-  return {teachers, error};
+  const {data, error} = await query;
+
+  if (error) {
+    console.error("Error fetching teachers:", error);
+    return {data: null, error};
+  }
+
+  return {data, error: null};
 }
 
 // READ (SHOW) — Wyświetlenie danych danego nauczyciela
-export async function fetchTeacher(userId: string) : Promise<TeachersControllerInterface>
-{
+export async function fetchTeacher(
+  userId: string
+): Promise<TeachersControllerResponse> {
   const supabase = createClient();
 
   const query = supabase
@@ -62,20 +71,34 @@ export async function fetchTeacher(userId: string) : Promise<TeachersControllerI
     .select("*")
     .eq("user", userId);
 
-  const {data : teachers, error} = await query;
-  return {teachers, error};
+  const {data, error} = await query;
+
+
+  if (error) {
+    console.error("Error fetching teachers:", error);
+    return {data: null, error};
+  }
+
+  return {data, error: null};
 }
 
 // UPDATE — Aktualizacja danych nauczyciela
-export async function updateTeacher(teacher: Teacher): Promise<TeachersControllerInterface>
-{
+export async function updateTeacher(teacher : Teacher):Promise<TeachersControllerResponse> {
   const supabase = createClient();
   const query = supabase
     .from('teachers')
-    .update(teacher)
+    .update({...teacher})
     .eq('id', teacher.id)
-    .select();
+    .select()
 
-  const {data : teachers, error} = await query;
-  return {teachers, error};
+  const {data, error} = await query;
+
+
+  if (error) {
+    console.error("Error fetching teachers:", error);
+    return {data: null, error};
+  }
+
+  return {data, error: null};
+
 }
