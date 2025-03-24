@@ -1,6 +1,3 @@
-// import {Subject} from "@/types/Subject";
-// import {City} from "@/types/City";
-
 export type Teacher = {
   description: string;
   id: string;
