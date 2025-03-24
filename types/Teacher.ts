@@ -22,8 +22,8 @@ export function formDataToTeacherConverter(formData: FormData): Teacher  {
     city: formData.get("city") as string,
     subjects: undefined,
     description: formData.get("description") as string,
-    online: formData.get("online") === "true", // Konwersja string -> boolean // TODO : W bazie zapisuje się NULL zamiast FALSE
-    students_location: formData.get("students_location") === "true", // Konwersja string -> boolean // TODO : W bazie zapisuje się NULL zamiast FALSE
-    teachers_location: formData.get("teachers_location") === "true", // Konwersja string -> boolean // TODO : W bazie zapisuje się NULL zamiast FALSE
+    online: formData.get("online") === "on", // Konwersja string -> boolean // TODO : W bazie zapisuje się NULL zamiast FALSE
+    students_location: formData.get("students_location") === "on", // Konwersja string -> boolean // TODO : W bazie zapisuje się NULL zamiast FALSE
+    teachers_location: formData.get("teachers_location") === "on", // Konwersja string -> boolean // TODO : W bazie zapisuje się NULL zamiast FALSE
   };
 }
