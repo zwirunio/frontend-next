@@ -1,8 +1,13 @@
 import {createClient} from "@/utils/supabase/client";
 import {Teacher} from "@/types/Teacher";
-import {redirect} from "next/navigation";
 
 // Controller
+export interface TeachersControllerInterface
+{
+  teachers: Teacher[] | null;
+  error: Error | null;
+}
+
 
 // CRUD - CREATE READ UPDATE DELETE
 
@@ -12,13 +17,8 @@ export async function fetchTeachers(
     online: boolean,
     studentsLocation: boolean,
     teachersLocation: boolean,
-    nameSearchQuery: string,
-    setTeachers: {
-      (value: (Array<Teacher> | { (prevState: Array<Teacher>): Array<Teacher> })): void
-    },
-    setError: {
-      (value: (null | string | { (prevState: (null | string)): (null | string) })): void
-    })
+    nameSearchQuery: string
+): Promise<TeachersControllerInterface>
   {
   const supabase = createClient();
 
@@ -48,40 +48,12 @@ export async function fetchTeachers(
     .order("name", {ascending: true})
     .order("surname", {ascending: true})
 
-  const {data, error} = await query;
-
-
-  if (error) {
-    setError(error.message);
-    setTeachers([]); // Czyszczenie listy nauczycieli w przypadku błędu
-  } else {
-    setError(null);
-    setTeachers(data ?? []);
-  }
-}
-
-// CHECK IF EXIST — Sprawdzenie, czy istnieje konto nauczyciela przypisane do użytkownika
-export async function existTeacher(
-  userId: string,
-)
-{
-  const supabase = createClient();
-
-  const query = supabase
-    .from("teachers")
-    .select("*")
-    .eq("user", userId);
-
-  const {data} = await query;
-
-  return data;
-
+  const {data : teachers, error} = await query;
+  return {teachers, error};
 }
 
 // READ (SHOW) — Wyświetlenie danych danego nauczyciela
-export async function fetchTeacher(
-  userId: string, setTeacher: (teacher: Teacher|null) => void, setError: (message: string | null) => void,
-  )
+export async function fetchTeacher(userId: string) : Promise<TeachersControllerInterface>
 {
   const supabase = createClient();
 
@@ -90,38 +62,20 @@ export async function fetchTeacher(
     .select("*")
     .eq("user", userId);
 
-  const {data, error} = await query;
-
-  if (error) {
-    setError(error.message);
-    setTeacher(null);
-  } else {
-    setError(null);
-    setTeacher(data[0] ?? null);
-  }
+  const {data : teachers, error} = await query;
+  return {teachers, error};
 }
 
 // UPDATE — Aktualizacja danych nauczyciela
-export async function updateTeacher(formData: FormData){
-  console.log(formData.get("id"));
-
+export async function updateTeacher(teacher: Teacher): Promise<TeachersControllerInterface>
+{
   const supabase = createClient();
-  const { data, error } = await supabase
+  const query = supabase
     .from('teachers')
-    .update({
-      name: formData.get("name") as string,
-      surname: formData.get("surname") as string,
-      city: formData.get("city") as string,
-      description: formData.get("description") as string,
-      online: formData.get("online") as string, // TODO: zapisuje się null zamiast false
-      teachers_location: formData.get("teachers_location") as string, // TODO: zapisuje się null zamiast false
-      students_location: formData.get("students_location") as string // TODO: zapisuje się null zamiast false
-    })
-    .eq('id', formData.get("id") as string)
-    .select()
+    .update(teacher)
+    .eq('id', teacher.id)
+    .select();
 
-  if (error) console.log(error)
-  if (data) console.log(data)
-  //revalidatePath("/profile","page")
-  redirect("/profile")
+  const {data : teachers, error} = await query;
+  return {teachers, error};
 }

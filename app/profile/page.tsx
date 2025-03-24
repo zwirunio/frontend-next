@@ -3,7 +3,7 @@ import {createClient} from "@/utils/supabase/client";
 
 import {useEffect, useState} from "react";
 import {User} from "@supabase/auth-js";
-import {Teacher} from "@/types/Teacher";
+import {formDataToTeacherConverter, Teacher} from "@/types/Teacher";
 import {fetchTeacher, updateTeacher} from "@/components/teachers/actions";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
@@ -21,45 +21,55 @@ function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    (async () => {
       const supabase = createClient();
       const {data} = await supabase.auth.getUser();
       setUser(data?.user || null);
-    };
-    fetchUser();
+    })();
   }, []);
 
   useEffect(() => {
     if (user?.id) {
-      fetchTeacher(user?.id, setTeacher, setError)
+      fetchTeacher(user?.id)
+        .then(response => {
+          if (response.error) {
+            setError(response.error.message)
+          }
+          if (response.teachers) {
+            setTeacher(response.teachers[0])
+          }
+        })
+        .catch((error: Error)=>{
+          setError(error.message);
+        })
     } else {
       setError("Nie ma tu jeszcze ID")
     }
   }, [user]);
 
 
-  function toggleOnline() {
+  function toggleTeacherBooleanParameter(propertyToToggle: ("online"|"teachers_location"|"students_location")) {
     setTeacher(prevTeacher => ({
       ...prevTeacher,
-      online: !prevTeacher?.online
-    }) as Teacher);
-  }
-  function toggleTeachersLocation() {
-    setTeacher(prevTeacher => ({
-      ...prevTeacher,
-      teachers_location: !prevTeacher?.teachers_location
-    }) as Teacher);
-  }
-  function toggleStudentsLocation() {
-    setTeacher(prevTeacher => ({
-      ...prevTeacher,
-      students_location: !prevTeacher?.students_location
+      [propertyToToggle]: !prevTeacher?.[propertyToToggle]
     }) as Teacher);
   }
 
+  function updateTeacherProxy(formData:FormData):void {
 
+    const teacher = formDataToTeacherConverter(formData);
 
-
+    updateTeacher(teacher).then(({ teachers, error }) => {
+      if (error) {
+        setError(error.message);
+      } else if (teachers && teachers.length > 0) {
+        setTeacher(teachers[0]);
+      } else {
+        setError("Nie znaleziono nauczyciela.");
+      }
+    })
+    .catch(err => setError(err.message)); // Obsługa błędów niezwiązanych z Supabase
+  }
 
   return (
     <>
@@ -76,7 +86,7 @@ function ProfilePage() {
                   <CardTitle>Edycja profilu nauczyciela</CardTitle>
                 </div>
               </CardHeader>
-              <form action={updateTeacher}>
+              <form action={updateTeacherProxy}>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Imię</Label>
@@ -108,38 +118,25 @@ function ProfilePage() {
                   </div>
                   <div className={"space-y-2"}>
                     <Label htmlFor="online">Udzielam lekcji online</Label>
-                    <Switch name={"online"} id="online" checked={teacher?.online} onCheckedChange={toggleOnline}/>
+                    <Switch name={"online"} id="online" checked={teacher?.online} onCheckedChange={()=>toggleTeacherBooleanParameter("online")}/>
                   </div>
                   <div className={"space-y-2"}>
                     <Label htmlFor="students_location">Udzielam lekcji online</Label>
-                    <Switch name={"students_location"} id="students_location" checked={teacher?.students_location} onCheckedChange={toggleStudentsLocation}/>
+                    <Switch name={"students_location"} id="students_location" checked={teacher?.students_location} onCheckedChange={()=>toggleTeacherBooleanParameter("students_location")}/>
                   </div>
                   <div className={"space-y-2"}>
                     <Label htmlFor="teachers_location">Udzielam lekcji online</Label>
-                    <Switch name={"teachers_location"} id="teachers_location" checked={teacher?.teachers_location} onCheckedChange={toggleTeachersLocation}/>
+                    <Switch name={"teachers_location"} id="teachers_location" checked={teacher?.teachers_location} onCheckedChange={()=>toggleTeacherBooleanParameter("teachers_location")}/>
                   </div>
                   <Input name={"id"} value={teacher?.id} type={"hidden"}/>
                   <div className="text-xs text-muted-foreground">ID: {teacher?.id}</div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  {/*<Button variant="outline" type="button" onClick={() => history.back()}>*/}
-                  {/*  Anuluj*/}
-                  {/*</Button>*/}
                   <Button type="submit">Zapisz zmiany</Button>
                 </CardFooter>
               </form>
             </Card>
           </div>
-          // <div>
-          //   <Form action={readQuery}>
-          //     {/* On submission, the input value will be appended to
-          // the URL, e.g. /search?query=abc */}
-          //     <Input name="query" />
-          //     <Button type="submit">Submit</Button>
-          //   </Form>
-          //
-          //   <Button onClick={() => setEditMode(false)}>Zapisz</Button>
-          // </div>
           :
           <div className={"flex flex-col"}>
             <p>{error}</p>
